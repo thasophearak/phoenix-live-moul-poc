@@ -1,0 +1,58 @@
+<section class="w-full h-[350px] md:h-[450px] lg:h-[600px] xl:h-[650px] relative mb-16">
+    <.picture photo={@profile["cover"]} type="profile_cover" />
+</section>
+<section class="my-16">
+    <div class="flex justify-center">
+        <%= live_redirect to: Routes.live_path(@socket, MoulWeb.HomeLive.Index) do %>
+            <.picture photo={@profile["picture"]} type="profile_picture" />
+        <% end %>
+    </div>
+    <div class="text-center pb-2 px-6">
+        <%= live_redirect to: Routes.live_path(@socket, MoulWeb.HomeLive.Index), class: "inline-flex" do %>
+            <h2 class="text-2xl md:text-3xl font-bold leading-normal text-neutral-900 dark:text-neutral-100"><%= @profile["name"] %></h2>
+        <% end %>
+        <p class="leading-normal text-neutral-700 dark:text-neutral-400 mb-2"><%= @profile["bio"] %></p>
+    </div>
+    <div class="flex justify-center">
+        <a class="mx-2" href={"https://github.com/" <> @profile["social"]["github"]}>
+            <.svg name="github" />
+        </a>
+        <a class="mx-2" href={"https://twitter.com/" <> @profile["social"]["twitter"]}>
+            <.svg name="twitter" />
+        </a>
+        <a class="mx-2" href={"https://www.youtube.com/" <> @profile["social"]["youtube"]}>
+            <.svg name="youtube" />
+        </a>
+    </div>
+</section>
+
+<%= for story <- @stories do %>
+    <section class="px-6 max-w-3xl mx-auto">
+        <%= live_redirect to: Routes.story_index_path(@socket, :show, story["slug"]) do %>
+            <% cover = Enum.find(story["photos"], fn p -> p["type"] == "cover" end) %>
+            <% title = Enum.find(story["blocks"], fn b -> b["type"] == "title" end)["text"] %>
+
+            <%= if cover != nil do %>
+                <div class="relative h-96 w-full rounded-2xl overflow-hidden group mb-16">
+                    <.picture photo={cover} type="story_cover" />
+                    <div class="absolute bottom-0 w-full transition ease-out duration-1000 after:content-[''] after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-t after:from-[#000] z-10 group-hover:translate-y-full">
+                        <h1 class="relative z-20 text-2xl md:text-3xl font-bold leading-normal p-4 text-neutral-100 transition translate-x-0">
+                            <%= title %>
+                        </h1>
+                    </div>
+                </div>
+            <% else %>
+                <div class="w-full mb-16">
+                    <h1 class="font-bold leading-normal text-2xl md:text-3xl">
+                        <%= title %>
+                    </h1>
+                </div>
+            <% end %>
+        <% end %>
+    </section>
+<% end %>
+
+<footer class="flex flex-col w-full text-center px-6 my-16 text-neutral-500 dark:text-neutral-400">
+    <p>Copyright © <%= @profile["name"] %>. All Rights Reserved.</p>
+</footer>
+<%# <%= live_redirect "Story", to: Routes.live_path(@socket, MoulWeb.StoryLive.Index, "my-slug") %>

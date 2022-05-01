@@ -1,0 +1,82 @@
+<input type="hidden" id="js-active-index" value={@active}>
+<input type="hidden" id="js-total-count" value={@total_count}>
+<input type="hidden" id="js-photos" value={@photos}>
+<div class="moul-darkbox-photo hidden">
+    <div id="js-moul-control">
+        <%= live_redirect to: Routes.story_index_path(@socket, :show, @story["slug"]), class: "js-close-link" do %>
+        <button
+            class="moul-darkbox-btn fixed z-30 border-0 p-0 bg-neutral-100/50 hover:bg-neutral-100 dark:bg-neutral-900/20 dark:hover:bg-neutral-900/60 transition-colors top-4 left-4 is-close rounded-full"
+        >
+            <svg
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                class="w-9 h-9 rounded-full p-1"
+            >
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+        </button>
+        <% end %>
+        <%= live_patch to: Routes.photo_index_path(@socket, :show, @story["slug"], @prev || ""), class: "js-prev-link" do %>
+        <button
+            class="moul-darkbox-btn fixed z-30 border-0 p-0 bg-neutral-100/50 hover:bg-neutral-100 dark:bg-neutral-900/20 dark:hover:bg-neutral-900/60 transition-colors is-prev left-4 rounded-full"
+        >
+            <svg
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                class="w-9 h-9 rounded-full p-1"
+            >
+                <path
+                    fill-rule="evenodd"
+                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"
+                />
+            </svg>
+        </button>
+        <% end %>
+
+        <%= live_patch to: Routes.photo_index_path(@socket, :show, @story["slug"], @next || ""), class: "js-next-link" do %>
+        <button
+            class="moul-darkbox-btn fixed z-30 border-0 p-0 bg-neutral-100/50 hover:bg-neutral-100 dark:bg-neutral-900/20 dark:hover:bg-neutral-900/60 transition-colors is-next right-4 rounded-full"
+        >
+            <svg
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                class="w-9 h-9 rounded-full p-1"
+            >
+                <path
+                    fill-rule="evenodd"
+                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"
+                />
+            </svg>
+        </button>
+        <% end %>
+    </div>
+
+    <%# actual photos %>
+    <div class="moul-darkbox fixed top-0 bottom-0 left-0 right-0 z-10 transition opacity-100" id="moul-darkbox-fixed" phx-update="ignore">
+        <div class="moul-darkbox-wrap overflow-hidden h-screen">
+	        <div class="moul-darkbox-view relative mx-auto z-20 overflow-hidden">
+
+            <div id="js-wrapper" class="moul-wrapper">
+                <div id="js-current-width">
+                    <div class="moul-darkbox-inner flex h-screen">
+                        <%= for photo <- @story["photos"] do %>
+                            <div class="moul-darkbox-list flex justify-center items-center js-min-width">
+                                <picture data-size={to_string(photo["width"])<>":"<> to_string(photo["height"])}>
+                                    <img
+                                        class="lazy"
+                                        src={"data:image/jpeg;charset=utf-8;base64,"<>photo["bh"]}
+                                        data-srcset={MoulWeb.PictureComponent.src_set(photo)}
+                                        data-sizes="auto"
+                                        alt={photo["name"]}
+                                    />
+                                </picture>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
