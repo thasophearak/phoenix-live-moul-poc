@@ -8,7 +8,8 @@ export const getDimension = (width, height, maxWidth, maxHeight) => {
 	return { width: width * ratio, height: height * ratio }
 }
 
-export let painGrid = (grid) => {
+export let painGrid = () => {
+	const grid = document.querySelectorAll('.moul-content-photos')
 	grid.forEach((g) => {
 		const photos = g.querySelectorAll('.moul-grid')
 		const photosSize = []

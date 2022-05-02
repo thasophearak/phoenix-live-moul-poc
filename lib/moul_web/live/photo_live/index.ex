@@ -21,6 +21,8 @@ defmodule MoulWeb.PhotoLive.Index do
     prev = Enum.at(story["photos"], active - 1)
     next = Enum.at(story["photos"], active + 1)
     {_, photos} = Jason.encode(story["photos"])
+    og_image = MoulWeb.Endpoint.url() <>
+        "/__moul/photos/" <> photo["hash"] <> "/xl/" <> photo["name"]
 
     {:ok,
      assign(socket,
@@ -37,7 +39,8 @@ defmodule MoulWeb.PhotoLive.Index do
        page_twitter_creator: @profile["social"]["twitter"] || "",
        page_canonical:
          MoulWeb.Endpoint.url() <> "/" <> story["slug"] <> "/photo/" <> photo["hash"],
-       page_description: @profile["bio"]
+       page_description: @profile["bio"],
+       page_og_image: og_image
      )}
   end
 

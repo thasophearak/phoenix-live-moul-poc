@@ -39,29 +39,41 @@ let liveSocket = new LiveSocket('/live', Socket, {
 // Show progress bar on live navigation and form submits
 topbar.config({ barColors: { 0: '#2563eb' }, shadowColor: 'rgba(0, 0, 0, .3)' })
 let topBarScheduled = undefined
+let loading, kind, to
+
 window.addEventListener('phx:page-loading-start', (info) => {
 	if (!topBarScheduled) {
 		topBarScheduled = setTimeout(() => topbar.show(), 120)
 	}
 	if (info.detail.kind == 'patch') {
-		painDarkbox({
-			loading: 'start',
-			kind: info.detail.kind,
-			to: info.detail.to.split('/').pop(),
-		})
+		loading = 'start'
+		kind = info.detail.kind
+		to = info.detail.to.split('/').pop()
+		painDarkbox({ loading, kind, to })
 	}
 })
 window.addEventListener('phx:page-loading-stop', (info) => {
 	clearTimeout(topBarScheduled)
 	topBarScheduled = undefined
 	topbar.hide()
-	// init grid
-	const grid = document.querySelectorAll('.moul-content-photos')
-	grid && painGrid(grid)
 
-	painDarkbox({ loading: 'stop', kind: info.detail.kind, to: '' })
+	painGrid()
+	loading = 'stop'
+	kind = info.detail.kind
+	to = ''
+	painDarkbox({ loading, kind, to })
 })
 
+let gridResize
+window.addEventListener('resize', () => {
+	clearTimeout(gridResize)
+	gridResize = setTimeout(painGrid, 100)
+})
+let darboxResize
+window.addEventListener('resize', () => {
+	clearTimeout(darboxResize)
+	darboxResize = setTimeout(painDarkbox({ loading, kind, to }), 100)
+})
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 
