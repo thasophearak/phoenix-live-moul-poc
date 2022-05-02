@@ -9,8 +9,11 @@
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
     <meta name="description" content={assigns[:page_description] || ""}>
+    <meta name="twitter:title" content={assigns[:page_title]}>
+    <meta name="twitter:description" content={assigns[:page_description] || ""}>
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:creator" content={assigns[:page_twitter_creator] || ""}>
+    <meta name="twitter:image" content={assigns[:page_og_image] || ""} />
     <meta property="og:title" content={assigns[:page_title] || ""}>
     <meta property="og:description" content={assigns[:page_description] || ""}>
     <meta property="og:image" content={assigns[:page_og_image] || ""}>

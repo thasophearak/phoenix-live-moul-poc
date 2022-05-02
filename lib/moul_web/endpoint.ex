@@ -28,7 +28,7 @@ defmodule MoulWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :moul
+    # plug Phoenix.Ecto.CheckRepoStatus, otp_app: :moul
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

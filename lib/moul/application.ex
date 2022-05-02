@@ -9,7 +9,7 @@ defmodule Moul.Application do
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
-      Moul.Repo,
+      # Moul.Repo,
       # Start the Telemetry supervisor
       MoulWeb.Telemetry,
       # Start the PubSub system

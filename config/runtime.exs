@@ -13,16 +13,16 @@ if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
 end
 
 if config_env() == :prod do
-  database_path =
-    System.get_env("DATABASE_PATH") ||
-      raise """
-      environment variable DATABASE_PATH is missing.
-      For example: /etc/moul/moul.db
-      """
+  # database_path =
+  #   System.get_env("DATABASE_PATH") ||
+  #     raise """
+  #     environment variable DATABASE_PATH is missing.
+  #     For example: /etc/moul/moul.db
+  #     """
 
-  config :moul, Moul.Repo,
-    database: database_path,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5")
+  # config :moul, Moul.Repo,
+  #   database: database_path,
+  #   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5")
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
@@ -40,7 +40,7 @@ if config_env() == :prod do
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :moul, MoulWeb.Endpoint,
-    url: [host: host, port: 443],
+    url: [host: host, port: 443, scheme: "https"],
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.

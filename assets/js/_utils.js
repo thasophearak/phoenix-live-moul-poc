@@ -1,4 +1,4 @@
-import { fixed_partition } from 'image-layout'
+import fixed_partition from '../vendor/layout'
 
 export const $ = (el) => document.querySelector(el)
 export const $$ = (el) => document.querySelectorAll(el)
