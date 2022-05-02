@@ -15,6 +15,16 @@ defmodule MoulWeb.StoryLive.Index do
   def mount(%{"slug" => slug}, _session, socket) do
     story = Enum.find(@stories, fn s -> s["slug"] == slug end)
     title = Enum.find(story["blocks"], fn b -> b["type"] == "title" end)["text"]
+    cover =  Enum.find(story["photos"], fn p -> p["type"] == "cover" end)
+    default = List.first(story["photos"])
+
+    og_image = MoulWeb.Endpoint.url() <>
+      "/__moul/photos/" <> default["hash"] <> "/xl/" <> default["name"]
+
+    if cover != nil do
+      og_image = MoulWeb.Endpoint.url() <>
+      "/__moul/photos/" <> cover["hash"] <> "/xl/" <> cover["name"]
+    end
 
     {:ok,
      assign(socket,
@@ -24,7 +34,8 @@ defmodule MoulWeb.StoryLive.Index do
        page_title: title <> " | " <> @profile["name"],
        page_twitter_creator: @profile["social"]["twitter"] || "",
        page_canonical: MoulWeb.Endpoint.url() <> "/" <> story["slug"],
-       page_description: @profile["bio"]
+       page_description: @profile["bio"],
+       page_og_image: og_image
      )}
   end
 end
