@@ -3,7 +3,7 @@
 set -o errexit
 
 # Initial setup
-mix deps.get --only prod
+mix deps.get
 MIX_ENV=prod mix compile
 
 # Compile assets
